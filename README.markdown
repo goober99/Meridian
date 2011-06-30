@@ -1,5 +1,7 @@
 # Meridian
 
+Timeline Creator
+
 ## About Meridian
 
 Easily create and edit timelines. Students can create timelines to help study. Teachers can use timelines as a visual aid. Writers can include timelines to visually depict a sequence of events or history of a subject.
