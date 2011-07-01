@@ -32,16 +32,25 @@
              [parent input-panel]
              [callback (lambda (button event)
                          (send timeline-display set-value (add-point (send year-field get-value)
-                                                                     (send desc-field get-value)))
+                                                                     (send desc-field get-value)
+                                                                     (send scale-control get-value)))
                          ;; Reset fields:
                          (send year-field set-value "")
                          (send desc-field set-value ""))])
 
-(define timeline-display (new text-field% [parent frame]
-                                          [label ""]
+(define timeline-display (new text-field% [label ""]
+                                          [parent frame]
                                           [style '(multiple)]
                                           [font (make-font #:family 'modern)]
                                           [min-height 250]))
+
+(define scale-control (new slider% [label #f]
+                                   [min-value 1]
+                                   [max-value 200]
+                                   [parent frame]
+                                   [callback (lambda (button event)
+                                               (send timeline-display set-value (add-point #f #f (send button get-value))))]
+                                   [init-value 100]))
 
 (send frame show #t)
 
@@ -49,12 +58,22 @@
 
 (define add-point
   (let ([timeline-data '()])
-    (lambda (year desc)
-      (set! timeline-data (append timeline-data (list (list year desc))))
+    (lambda (year desc scale)
+      (when (and year desc)
+        (set! timeline-data (append timeline-data (list (list year desc)))))
       (build-timeline (sort timeline-data (lambda (a b)
-        (< (string->number (car a)) (string->number (car b)))))))))
+                        (< (string->number (car a)) (string->number (car b)))))
+                      scale))))
 
-(define (build-timeline timeline-data)
+;(define add-point
+;  (let ([timeline-data '()])
+;    (lambda (year desc scale)
+;      (set! timeline-data (append timeline-data (list (list year desc))))
+;      (build-timeline (sort timeline-data (lambda (a b)
+;                        (< (string->number (car a)) (string->number (car b)))))
+;                      scale))))
+
+(define (build-timeline timeline-data scale)
   (define (span gap bridge)
     (if (< gap 1)
       bridge
@@ -70,7 +89,8 @@
                          (cadr timeline-point)
                          "\n"
                          (if (> (length timeline-data) 1)
-                           (span (- (- (string->number (caadr timeline-data))
-                                       (string->number (car timeline-point))) 1) "")
+                           (span (* (/ scale 100)
+                                 (- (- (string->number (caadr timeline-data))
+                                       (string->number (car timeline-point))) 1)) "")
                          ""))))))
   (builder timeline-data ""))
