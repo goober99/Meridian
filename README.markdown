@@ -12,7 +12,7 @@ Easily create and edit timelines. Students can create timelines to help study. T
 
     NOTE: [Racket PPA](https://launchpad.net/~plt/+archive/racket) available for Ubuntu users.
 
-2. Open a terminal from the directory where you downloaded meridian.scm and type:
+2. Open a terminal from the directory **meridian.scm** is in and type:
 
     <code>> racket meridian.scm</code>
 
