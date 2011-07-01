@@ -38,7 +38,7 @@
                          (send year-field set-value "")
                          (send desc-field set-value ""))])
 
-(define timeline-display (new text-field% [label ""]
+(define timeline-display (new text-field% [label #f]
                                           [parent frame]
                                           [style '(multiple)]
                                           [font (make-font #:family 'modern)]
@@ -64,14 +64,6 @@
       (build-timeline (sort timeline-data (lambda (a b)
                         (< (string->number (car a)) (string->number (car b)))))
                       scale))))
-
-;(define add-point
-;  (let ([timeline-data '()])
-;    (lambda (year desc scale)
-;      (set! timeline-data (append timeline-data (list (list year desc))))
-;      (build-timeline (sort timeline-data (lambda (a b)
-;                        (< (string->number (car a)) (string->number (car b)))))
-;                      scale))))
 
 (define (build-timeline timeline-data scale)
   (define (span gap bridge)
