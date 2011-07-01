@@ -59,7 +59,7 @@
 (define add-point
   (let ([timeline-data '()])
     (lambda (year desc scale)
-      (when (and year desc)
+      (and (and year desc)
         (set! timeline-data (append timeline-data (list (list year desc)))))
       (build-timeline (sort timeline-data (lambda (a b)
                         (< (string->number (car a)) (string->number (car b)))))
