@@ -17,44 +17,7 @@
 
 #lang racket
 
-;;;; ------------------------- INTERFACE ------------------------- ;;;;
-
-(require racket/gui)
-
-(define frame (new frame% [label "Timeline"]))
-
-(define input-panel (new horizontal-panel% [parent frame]))
-(define year-field (new text-field% [label "Year:"]
-                                    [parent input-panel]))
-(define desc-field (new text-field% [label "Description:"]
-                                    [parent input-panel]))
-(new button% [label "Add to Timeline"]
-             [parent input-panel]
-             [callback (lambda (button event)
-                         (send timeline-display set-value (add-point (send year-field get-value)
-                                                                     (send desc-field get-value)
-                                                                     (send scale-control get-value)))
-                         ;; Reset fields:
-                         (send year-field set-value "")
-                         (send desc-field set-value ""))])
-
-(define timeline-display (new text-field% [label #f]
-                                          [parent frame]
-                                          [style '(multiple)]
-                                          [font (make-font #:family 'modern)]
-                                          [min-height 250]))
-
-(define scale-control (new slider% [label #f]
-                                   [min-value 1]
-                                   [max-value 200]
-                                   [parent frame]
-                                   [callback (lambda (button event)
-                                               (send timeline-display set-value (add-point #f #f (send button get-value))))]
-                                   [init-value 100]))
-
-(send frame show #t)
-
-;;;; --------------------- APPLICATION LOGIC --------------------- ;;;;
+(provide add-point)
 
 (define add-point
   (let ([timeline-data '()])
