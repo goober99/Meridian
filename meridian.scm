@@ -20,7 +20,7 @@
 ;; Racket Libraries
 (require racket/gui)
 ;; Meridian Libraries
-(require "core/timeline.scm")
+(require "lib/timeline.scm")
 
 (define frame (new frame% [label "Timeline"]))
 
