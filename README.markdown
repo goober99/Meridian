@@ -24,6 +24,6 @@ If you know (or would like to learn) Scheme and would like to help develop Merid
 
 ## Copyright and License
 
-Meridian is Copyright (c) 2011 by Matthew D. Miller.
+Meridian is Copyright (c) 2011-2012 by Matthew D. Miller.
 
 This program is free software. You may distribute it and/or modify it under the terms of the GNU General Public License, version 3.
