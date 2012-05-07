@@ -21,6 +21,13 @@
   (check-equal? (add-point  "1942" "The Magnificent Ambersons")
                 (list (list "1941" "Citizen Kane")
                       (list "1942" "The Magnificent Ambersons")
+                      (list "1946" "The Stranger")))
+  
+  ;; Add another event for an existing date:
+  (check-equal? (add-point  "1941" "Orson Welles' directorial debut")
+                (list (list "1941" (list "Citizen Kane"
+                                         "Orson Welles' directorial debut"))
+                      (list "1942" "The Magnificent Ambersons")
                       (list "1946" "The Stranger"))))
 
 ;(test-case
