@@ -20,7 +20,8 @@
 ;; Racket Libraries
 (require racket/gui)
 ;; Meridian Libraries
-(require "lib/timeline.scm")
+(require "lib/display.scm"
+         "lib/timeline.scm")
 
 (define frame (new frame% [label "Timeline"]))
 
@@ -32,9 +33,9 @@
 (new button% [label "Add to Timeline"]
              [parent input-panel]
              [callback (lambda (button event)
-                         (send timeline-display set-value (add-point (send year-field get-value)
-                                                                     (send desc-field get-value)
-                                                                     (send scale-control get-value)))
+                         (send timeline-display set-value (timeline-to-text (add-point (send year-field get-value)
+                                                                                       (send desc-field get-value))
+                                                                            (send scale-control get-value)))
                          ;; Reset fields:
                          (send year-field set-value "")
                          (send desc-field set-value ""))])
@@ -50,7 +51,8 @@
                                    [max-value 200]
                                    [parent frame]
                                    [callback (lambda (button event)
-                                               (send timeline-display set-value (add-point #f #f (send button get-value))))]
+                                               (send timeline-display set-value (timeline-to-text (add-point #f #f)
+                                                                                                  (send button get-value))))]
                                    [init-value 100]))
 
 (send frame show #t)

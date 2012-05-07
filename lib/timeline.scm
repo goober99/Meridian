@@ -21,31 +21,8 @@
 
 (define add-point
   (let ([timeline-data '()])
-    (lambda (year desc scale)
+    (lambda (year desc)
       (and (and year desc)
         (set! timeline-data (append timeline-data (list (list year desc)))))
-      (build-timeline (sort timeline-data (lambda (a b)
-                        (< (string->number (car a)) (string->number (car b)))))
-                      scale))))
-
-(define (build-timeline timeline-data scale)
-  (define (span gap bridge)
-    (if (< gap 1)
-      bridge
-      (span (- gap 1) (string-append bridge "     |\n"))))
-  (define (builder timeline-data timeline)
-    (if (< (length timeline-data) 1)
-      timeline
-      (let ([timeline-point (car timeline-data)])
-        (builder (cdr timeline-data)
-          (string-append timeline
-                         (car timeline-point)
-                         " | "
-                         (cadr timeline-point)
-                         "\n"
-                         (if (> (length timeline-data) 1)
-                           (span (* (/ scale 100)
-                                 (- (- (string->number (caadr timeline-data))
-                                       (string->number (car timeline-point))) 1)) "")
-                         ""))))))
-  (builder timeline-data ""))
+      (sort timeline-data (lambda (a b)
+        (< (string->number (car a)) (string->number (car b))))))))
