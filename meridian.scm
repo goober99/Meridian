@@ -33,18 +33,17 @@
 (new button% [label "Add to Timeline"]
              [parent input-panel]
              [callback (lambda (button event)
-                         (send timeline-text set-value (timeline-to-text (add-point (send year-field get-value)
-                                                                                    (send desc-field get-value))
-                                                                         (send scale-control get-value)))
-                         ;; Reset fields:
-                         (send year-field set-value "")
-                         (send desc-field set-value ""))])
+                         (let ([timeline-data (add-point (send year-field get-value)
+                                                         (send desc-field get-value))]
+                               [scale (send scale-control get-value)])
+		                       (send timeline-text set-value (timeline-to-text timeline-data scale))
+		                       (display-timeline timeline-dc timeline-data scale))
+	                       ;; Reset fields:
+	                       (send year-field set-value "")
+	                       (send desc-field set-value ""))])
 
 (define timeline-display (new canvas% [parent frame]
                                       [style '(vscroll)]
-                                      [paint-callback
-                                        (lambda (canvas dc)
-                                          (send dc draw-line 50 10 50 110))]
                                       [min-height 250]))
 (send timeline-display init-auto-scrollbars #f 250 0.0 0.0)
 (define timeline-dc (send timeline-display get-dc))

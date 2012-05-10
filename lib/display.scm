@@ -17,8 +17,27 @@
 
 #lang racket
 
-(provide timeline-to-text)
+(provide display-timeline timeline-to-text)
 
+(define (display-timeline dc timeline-data scale)
+  (letrec ([year-to-pixels 10]
+           [horiz-pos 50]
+           [start-year (string->number (caar timeline-data))]
+           [plot-points (lambda (timeline-data)
+             (let ([prev-year (string->number (caar timeline-data))]
+                   [trimmed-timeline (cdr timeline-data)])
+	             (if (< (length trimmed-timeline) 1)
+	               (begin
+	                 (send dc set-pen "black" 1 'solid)
+	                 (send dc draw-line horiz-pos 0 horiz-pos (* (+ (- prev-year start-year) 1) year-to-pixels)))
+	               (begin
+	                 (let ([this-year (string->number (caar trimmed-timeline))])
+	                   (send dc draw-point horiz-pos (- (* (+ (- this-year start-year) 1) year-to-pixels) (/ year-to-pixels 2))))
+	                 (plot-points trimmed-timeline)))))])
+    (send dc set-pen "black" 5 'solid)
+    (send dc draw-point horiz-pos (/ year-to-pixels 2))
+    (plot-points timeline-data)))
+        
 (define (timeline-to-text timeline-data scale)
   (define (span gap bridge)
     (if (< gap 1)
